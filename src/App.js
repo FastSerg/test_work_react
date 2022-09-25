@@ -1,25 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      name: 'Stepan', age: 25, isState: false
+    }
+
+    this.handleChange = this.handleChange.bind(this)
+  }
+
+  handleChange() {
+    this.setState((prevState) => ({
+      ...prevState,
+      name: 'Mykola', age: 30, isState: !this.state.isState
+    }))
+  }
+
+  render() {
+    return (
+      <>
+        {this.state.isState ? <p>Name: {this.state.name}, age: {this.state.age}</p> : null}
+
+        <button onClick={() => this.handleChange()}>{this.state.isState ? 'скрыть' : 'показать'}</button>
+      </>
+    )
+  }
+
 }
 
 export default App;
