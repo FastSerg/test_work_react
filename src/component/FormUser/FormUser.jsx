@@ -1,5 +1,4 @@
 import React from 'react'
-import { FormErrors } from './FormErrors';
 import './FormUser.scss'
 
 class FormUser extends React.Component {
@@ -14,7 +13,6 @@ class FormUser extends React.Component {
     emailValid: false,
     passwordValid: false,
     formValid: false,
-    isFormUserState: false
   }
 
   handleUserInput = (e) => {
@@ -34,7 +32,7 @@ class FormUser extends React.Component {
 
       case 'firstName':
       firstNameValid = value.match(/(?=.*[a-z])[a-z]{2,}/g);
-      fieldValidationErrors.firstName = firstNameValid ? '' : 'is too short';
+      fieldValidationErrors.firstName  = firstNameValid ? '' : 'is too short';
       break;
 
       case 'lastName':
@@ -67,16 +65,18 @@ class FormUser extends React.Component {
   }
 
 render() {
+  
   return (
     <div className='form-container'>
     <form className='form-user'>
-      <div className=''>
-        <FormErrors formErrors={this.state.formErrors} />
-      </div>
       <input type="text" name='firstName' placeholder='First Name' onChange={this.handleUserInput} value={this.state.firstName} required />
+      {!this.state.firstNameValid && <div className='error-validations'>{this.state.formErrors.firstName}</div>}
       <input type="text" name='lastName' placeholder='Last Name' onChange={this.handleUserInput} value={this.state.lastName} required/>
+      {!this.state.lastNameValid && <div className='error-validations'>{this.state.formErrors.lastName}</div>}
       <input type="email" name='email' placeholder='email' onChange={this.handleUserInput} value={this.state.email} required/>
+      {!this.state.emailValid && <div className='error-validations'>{this.state.formErrors.email}</div>}
       <input type="password" name='password' placeholder='password' onChange={this.handleUserInput} value={this.state.password} required/>
+      {!this.state.passwordValid && <div className='error-validations'>{this.state.formErrors.password}</div>}
       <button type='submit' disabled={!this.state.formValid}>Send Form</button>
     </form>
     </div>
