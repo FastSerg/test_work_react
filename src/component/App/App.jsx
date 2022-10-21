@@ -1,18 +1,12 @@
-import FormUser from 'component/FormUser/FormUser';
-import React from 'react';
+import React from 'react'
+import Github from './Github'
 
-
-
-class App extends React.Component {
- 
-  render() {
+const App = () => {
     return (
-      <> 
-        <FormUser />
-      </>
+        <>
+            <Github />
+        </>
     )
-  }
-
 }
 
-export default App;
+export default App
