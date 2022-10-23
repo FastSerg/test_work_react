@@ -1,32 +1,15 @@
 import React, { useEffect, useState } from 'react'
+import Details from './Details'
+import HeaderInput from './HeaderInput'
+import UserNameList from './UserNameList'
 
 const Github = (props) => {
+    let initialSearchState = 'TelychkoVitalii'
     const [selectedUser, setSelectedUser] = useState('')
-    const [userName, setUserName] = useState([])
-    const [tempSearch, setTempSearch] = useState('TelychkoVitalii')
-    const [searchTern, setSearchTern] = useState('TelychkoVitalii')
-    const [userDetails, setUserDetails] = useState(null)
+    const [searchTern, setSearchTern] = useState(initialSearchState)
 
     useEffect(() => {
         if (selectedUser) document.title = selectedUser.login
-    }, [selectedUser])
-
-    useEffect(() => {
-        fetch(`https://api.github.com/search/users?q=${searchTern}`)
-            .then((res) => {
-                return res.json()
-            })
-            .then((data) => setUserName(data.items))
-    }, [searchTern])
-
-    useEffect(() => {
-        if (!!selectedUser) {
-            fetch(`https://api.github.com/users/${selectedUser.login}`)
-                .then((res) => {
-                    return res.json()
-                })
-                .then((data) => setUserDetails(data))
-        }
     }, [selectedUser])
 
     return (
@@ -38,48 +21,24 @@ const Github = (props) => {
             }}
         >
             <div>
-                <div>
-                    <input
-                        type="text"
-                        placeholder="search"
-                        value={tempSearch}
-                        onChange={(e) => setTempSearch(e.target.value)}
-                    />
-                    <button onClick={() => setSearchTern(tempSearch)}>
-                        find
-                    </button>
-                </div>
-                <ul>
-                    {userName.map((user) => (
-                        <li
-                            style={
-                                selectedUser === user
-                                    ? { background: 'gray' }
-                                    : null
-                            }
-                            key={user.id}
-                            onClick={() => setSelectedUser(user)}
-                        >
-                            {user.login}
-                        </li>
-                    ))}
-                </ul>
+                <HeaderInput
+                    searchTern={searchTern}
+                    setSearchTern={setSearchTern}
+                />
+                <button
+                    onClick={() => {
+                        setSearchTern(initialSearchState)
+                    }}
+                >
+                    reset
+                </button>
+                <UserNameList
+                    selectedUser={selectedUser}
+                    setSelectedUser={setSelectedUser}
+                    searchTern={searchTern}
+                />
             </div>
-            <div>
-                <h2>UserName</h2>
-                {userDetails && (
-                    <div>
-                        <img
-                            src={userDetails.avatar_url}
-                            width="250px"
-                            height="250px"
-                            alt=""
-                        />
-                        <br />
-                        {userDetails.login}, followers : {userDetails.followers}
-                    </div>
-                )}
-            </div>
+            <Details selectedUser={selectedUser} />
         </div>
     )
 }
